@@ -7,7 +7,7 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 use Attogram\Filesystem\Cache;
 
-final class WeatherbitTests extends TestCase
+final class WeatherbitTest extends TestCase
 {
     /**
      * @var Attogram\Weatherbit\Weatherbit
@@ -25,5 +25,19 @@ final class WeatherbitTests extends TestCase
     {
         $this->setWeatherbit();
         $this->assertInstanceOf(Weatherbit::class, $this->weatherbit);
+    }
+
+    public function testSetKeyEmpty()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setKey('');
+    }
+
+    public function testSetKeyNotString()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setKey([]]);
     }
 }
