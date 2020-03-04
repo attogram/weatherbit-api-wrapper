@@ -5,7 +5,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Attogram\Filesystem\Cache;
+use Attogram\Weatherbit\Weatherbit;
 
 final class WeatherbitTest extends TestCase
 {
