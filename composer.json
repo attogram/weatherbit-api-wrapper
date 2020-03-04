@@ -1,0 +1,15 @@
+{
+    "name": "attogram/weatherbit-api-wrapper",
+    "description": "PHP Wrapper for Weatherbit.io API",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7 || ^8",
+        "lib-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Attogram\\Weatherbit\\": "src/"
+        }
+    }
+}
