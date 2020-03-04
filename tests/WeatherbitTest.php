@@ -38,6 +38,6 @@ final class WeatherbitTest extends TestCase
     {
         $this->setWeatherbit();
         $this->expectException(Exception::class);
-        $this->weatherbit->setKey([]]);
+        $this->weatherbit->setKey([]);
     }
 }
