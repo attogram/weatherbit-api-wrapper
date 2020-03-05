@@ -21,7 +21,7 @@ class Weatherbit
     /**
      * @var string - user agent for API requests
      */
-    const USER_AGENT = 'WeatherbitApiWrapper/0.2.0';
+    const USER_AGENT = 'WeatherbitApiWrapper/1.0.0';
 
     /**
      * @var string - Weatherbit api endpoint prefix
