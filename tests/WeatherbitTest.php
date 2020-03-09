@@ -128,7 +128,91 @@ final class WeatherbitTest extends TestCase
     public function testSetLocationByLatitudeLongitude()
     {
         $this->setWeatherbit();
-        $this->weatherbit->setLocationByLatitudeLongitude('48.869966', '2.332706');
+        $this->weatherbit->setLocationByLatitudeLongitude('48.869966', '2.332706'); // Paris, FR
         $this->assertTrue(true);
     }
+
+    public function testSetLocationByLatitudeLongitudeEmptyStrings()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setLocationByLatitudeLongitude('', '');
+    }
+
+    public function testSetLocationByLatitudeLongitudeNotStrings()
+    {
+        $this->setWeatherbit();
+        $this->expectException(TypeError::class);
+        $this->weatherbit->setLocationByLatitudeLongitude([], []);
+    }
+
+    public function testSetLocationByCity()
+    {
+        $this->setWeatherbit();
+        $this->weatherbit->setLocationByCity('Amsterdam');
+        $this->assertTrue(true);
+    }
+
+    public function testSetLocationByCityCountry()
+    {
+        $this->setWeatherbit();
+        $this->weatherbit->setLocationByCity('Amsterdam', 'NL');
+        $this->assertTrue(true);
+    }
+
+    public function testSetLocationByCityStateCountry()
+    {
+        $this->setWeatherbit();
+        $this->weatherbit->setLocationByCity('Amsterdam, NY', 'US');
+        $this->assertTrue(true);
+    }
+
+    public function testSetLocationByCityEmptyString()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setLocationByCity('');
+    }
+
+    public function testSetLocationByCityEmptyStrings()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setLocationByCity('', '');
+    }
+
+    public function testSetLocationByCityNotString()
+    {
+        $this->setWeatherbit();
+        $this->expectException(TypeError::class);
+        $this->weatherbit->setLocationByCity([]);
+    }
+
+    public function testSetLocationByCityNotStrings()
+    {
+        $this->setWeatherbit();
+        $this->expectException(TypeError::class);
+        $this->weatherbit->setLocationByCity([], []);
+    }
+
+    public function testSetLocationByCityInvalidCountry()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setLocationByCity('Amsterdam', 'NLD');
+    }
+
+    // @TODO setLocationByCityId
+    // @TODO setLocationByCityIds
+    // @TODO setLocationByPostalCode
+    // @TODO setLocationByIp
+    // @TODO setLocationByStation
+    // @TODO setLocationByStations
+
+    // @TODO getDailyForecast
+    // @TODO getCurrent
+    // @TODO getUsage
+    // @TODO getUrl
+    // @TODO setUrl
+    // @TODO get
 }

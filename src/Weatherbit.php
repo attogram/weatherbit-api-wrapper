@@ -143,10 +143,36 @@ class Weatherbit
      */
     public function setLocationByLatitudeLongitude(string $latitude, string $longitude)
     {
+        if (empty($latitude) || empty($longitude)) {
+            throw new Exception('Missing latitude and/or longitude');
+        }
+
         $this->location = [
             'lat' => $latitude,
             'lon' => $longitude,
         ];
+    }
+
+    /**
+     * Set Location by City Name
+     * 
+     * @param string $city
+     * @param string $country (optional) 2 letter country code
+     */
+    public function setLocationByCity(string $city, string $country = '')
+    {
+        if (empty($city)) {
+            throw new Exception('Invalid City');
+        }
+
+        if (!empty($country) && strlen($country) != 2) {
+            throw new Exception('Invalid Country Code');
+        }
+    
+        $this->location['city'] = $city;
+        if (!empty($country)) {
+            $this->location['country'] = $country;
+        }
     }
 
     /**
@@ -158,18 +184,6 @@ class Weatherbit
     {
         $this->location = [
             'city_id' => $cityId,
-        ];
-    }
-
-    /**
-     * Set Location by Postal Code
-     * 
-     * @param string $postalCode
-     */
-    public function setLocationByPostalCode(string $postalCode)
-    {
-        $this->location = [
-            'postal_code' => $postalCode,
         ];
     }
 
@@ -187,20 +201,14 @@ class Weatherbit
     }
 
     /**
-     * Set Location by City Name
+     * Set Location by Postal Code
      * 
-     * @param string $city
-     * @param string $country (optional) 2 letter country code
+     * @param string $postalCode
      */
-    public function setLocationByCity(string $city, string $country = '')
+    public function setLocationByPostalCode(string $postalCode)
     {
-        if (empty($city)) {
-            throw new Exception('Invalid City');
-        }
-
         $this->location = [
-            'city' => $city,
-            'country' => $country,
+            'postal_code' => $postalCode,
         ];
     }
 
