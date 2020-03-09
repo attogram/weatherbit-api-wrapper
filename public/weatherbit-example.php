@@ -53,7 +53,7 @@ try {
         print '<pre>setLocationByLatitudeLongitude(' . htmlentities("$latitude, $longitude") . ')</pre>';
         $weatherbit->setLocationByLatitudeLongitude($latitude, $longitude);
     } elseif (!empty($ipAddress)) {
-        print '<pre>setLocationByIP(' . htmlentities(ipAddress) . ')</pre>';
+        print '<pre>setLocationByIP(' . htmlentities($ipAddress) . ')</pre>';
         $weatherbit->setLocationByIP($ipAddress);
     }
 
@@ -84,7 +84,7 @@ function printResults($data, $error)
 {
     global $weatherbit;
 
-    print '<pre>API Call URL:<br /><a href="' . $weatherbit->getUrl() . '" target="_blank">'
+    print '<pre>API Call URL: <a href="' . $weatherbit->getUrl() . '" target="_blank">'
     . $weatherbit->getUrl() . '</a></pre>';
 
     if ($error) {

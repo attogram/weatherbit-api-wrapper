@@ -101,8 +101,8 @@ class Weatherbit
      */
     public function setKey(string $key)
     {
-        if (!is_string($key) || empty($key)) {
-            throw new Exception('Invalid API Key');
+        if (empty($key)) {
+            throw new Exception('Missing API Key');
         }
         $this->key = $key;
     }
