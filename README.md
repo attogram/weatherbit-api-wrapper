@@ -35,7 +35,7 @@ try {
 print_r($currentWeather);
 ```
 
-* see [public/test.php](public/example.php) for an example web form
+* see [public/example.php](public/example.php) for an example web form
 
 ## Functions
 
