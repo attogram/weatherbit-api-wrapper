@@ -47,7 +47,7 @@ print '<html>
         IP Address: <input name="ip" type="text" value="' . $ipAddress . '" size="20" />
         <br /><br />
         <input type="hidden" name="run" value="test" />
-        <input type="submit" value="  Get Weatherbit API Response  " />
+        <input type="submit" value="  Get Weatherbit.io API Response  " />
         &nbsp; &nbsp; <a href="' . $_SERVER['PHP_SELF'] . '">reset</a>
     </form>';
 
