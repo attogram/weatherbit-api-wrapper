@@ -18,10 +18,12 @@ use function strlen;
 
 class Weatherbit
 {
+    const VERSION = '1.1.0';
+
     /**
      * @var string - user agent for API requests
      */
-    const USER_AGENT = 'WeatherbitApiWrapper/1.0.0';
+    const USER_AGENT = 'WeatherbitApiWrapper/' . self::VERSION;
 
     /**
      * @var string - Weatherbit api endpoint prefix
@@ -51,6 +53,13 @@ class Weatherbit
     const POSTFIX_CURRENT = '/current';
 
     /**
+     * @var string - api postfix for current usage
+     *             - Returns the current Weather API usage summary for your API key subscription.
+     * @see https://www.weatherbit.io/api/subscription-usage
+     */
+    const POSTFIX_USAGE = '/subscription/usage';
+
+    /**
      * @var string - Weatherbit API access key
      */
     private $key = '';
@@ -64,6 +73,11 @@ class Weatherbit
      * @var string - Country to use for weather lookup
      */
     private $country = '';
+
+    /**
+     * @var string - IP address to use for weather lookup
+     */
+    private $ip = '';
 
     /**
      * Set Weatherbit API access key
@@ -111,6 +125,17 @@ class Weatherbit
     }
 
     /**
+     * Set IP address
+     * 
+     * @param string $ip - ipv4 IP address
+     * @return void
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+    }
+
+    /**
      * Get Daily Weather Forecast for 1-16 days in future
      * 
      * @param int $days - Number of days to forecast (optional, default 10)
@@ -151,6 +176,18 @@ class Weatherbit
             . '&units=M' // (optional, default: M)  M = Metric (Celcius, m/s, mm), I = Imperial Fahrenheit (F, mph, in), S = Scientific (Kelvin, m/s, mm) 
             . '&city=' . urlencode($this->city)
             . '&country=' . urlencode($this->country);
+
+        return $this->get($url);
+    }
+
+    /**
+     * Get current API usage stats
+     * 
+     * @return array
+     */
+    public function getUsage()
+    {
+        $url = self::PREFIX_API . self::POSTFIX_USAGE . '?key=' . $this->key;
 
         return $this->get($url);
     }
