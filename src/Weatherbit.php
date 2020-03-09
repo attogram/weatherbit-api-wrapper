@@ -69,7 +69,7 @@ class Weatherbit
      * @var string - Language for API response - default 'en' for English
      * @see https://www.weatherbit.io/api/requests
      */
-    private $language = 'en';
+    private $language = '';
 
     /**
      * @var string - Units for API Response 
@@ -78,7 +78,7 @@ class Weatherbit
      *               I = Imperial Fahrenheit (F, mph, in)
      * @see https://www.weatherbit.io/api/requests
      */
-    private $units = 'M';
+    private $units = '';
 
     /**
      * @var string - array of location values for API call
@@ -104,6 +104,34 @@ class Weatherbit
             throw new Exception('Invalid API Key');
         }
         $this->key = $key;
+    }
+
+    /**
+     * Set Language
+     * @see https://www.weatherbit.io/api/requests
+     *
+     * @param string $languageCode - 2 letter language code
+     */
+    public function setLanguage(string $languageCode)
+    {
+        if (empty($languageCode) || strlen($languageCode) != 2) {
+            throw new Exception('Invalid Language Code');
+        }
+        $this->language = $languageCode;
+    }
+
+    /**
+     * Set Units
+     * @see https://www.weatherbit.io/api/requests
+     * 
+     * @param string $unitsCode - 1 letter units code
+     */
+    public function setUnits(string $unitsCode)
+    {
+        if (empty($unitsCode) || !in_array($unitsCode, ['M', 'S', 'I'])) {
+            throw new Exception('Invalid Units value.  Please use: M, S, or I');
+        }
+        $this->units = $unitsCode;
     }
 
     /**
@@ -272,10 +300,14 @@ class Weatherbit
      */
     private function setUrl($prefix, $additional = [])
     {
-        $this->url = $prefix
-            . '?key=' . $this->key
-            . '&lang=' . $this->language
-            . '&units=' . $this->units;
+        $this->url = $prefix . '?key=' . $this->key;
+
+        if (!empty($this->language)) {
+            $this->url .= '&lang=' . $this->language;
+        }
+        if (!empty($this->units)) {
+            $this->url .= '&units=' . $this->units;
+        }
         foreach ($this->location as $name => $value) {
             $this->url .= '&' . $name . '=' . $value;
         }

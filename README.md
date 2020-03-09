@@ -42,6 +42,10 @@ print_r($currentWeather);
 
 ### public function setKey(string $key)
 
+### public function setLanguage(string $languageCode)
+
+### public function setUnits(string $unitsCode)
+
 ### public function setLocationByLatitudeLongitude(string $latitude, string $longitude)
 
 ### public function setLocationByCityId(string $cityId)
