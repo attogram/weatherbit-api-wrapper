@@ -27,13 +27,13 @@ $data['ipAddress'] = isset($_GET['ip'])       ? $_GET['ip']           : '';
 $data['latitude']  = isset($_GET['lat'])      ? $_GET['lat']          : '';
 $data['longitude'] = isset($_GET['long'])     ? $_GET['long']         : '';
 
-$selected = ' checked';
-$data['call_forecast'] = ($data['call'] == 'forecast') ? $selected : '';
-$data['call_current'] = ($data['call'] == 'current') ? $selected : '';
-$data['call_usage'] = ($data['call'] == 'usage') ? $selected : '';
-$data['units_M'] = ($data['units'] == 'M') ? $selected : '';
-$data['units_I'] = ($data['units'] == 'I') ? $selected : '';
-$data['units_S'] = ($data['units'] == 'S') ? $selected : '';
+$check = ' checked';
+$data['call_forecast'] = ($data['call'] == 'forecast') ? $check : '';
+$data['call_current']  = ($data['call'] == 'current')  ? $check : '';
+$data['call_usage']    = ($data['call'] == 'usage')    ? $check : '';
+$data['units_M']       = ($data['units'] == 'M')       ? $check : '';
+$data['units_I']       = ($data['units'] == 'I')       ? $check : '';
+$data['units_S']       = ($data['units'] == 'S')       ? $check : '';
 
 $data['pageTitle'] = 'weatherbit-api-wrapper v' . Weatherbit::VERSION;
 
@@ -63,9 +63,9 @@ try {
 
     if (!empty($data['city'])) {
         $weatherbit->setLocationByCity($data['city'], $data['country']);
-    } elseif (!empty($latitude)) {
+    } elseif (!empty($data['latitude'])) {
         $weatherbit->setLocationByLatitudeLongitude($data['latitude'], $data['longitude']);
-    } elseif (!empty($ipAddress)) {
+    } elseif (!empty($data['ipAddress'])) {
         $weatherbit->setLocationByIP($data['ipAddress']);
     }
 
@@ -151,7 +151,7 @@ function printForm()
         Units:
             <input type="radio" name="units" value="M"' . $data['units_M'] . '>M - Metric (Celcius, m/s, mm)</input>
             &nbsp;
-            <input type="radio" name="units" value="I"' . $data['units_I'] . '>I - Imperial Fahrenheit (F, mph, in)</input>
+            <input type="radio" name="units" value="I"' . $data['units_I'] . '>I - Imperial (Fahrenheit, mph, in)</input>
             &nbsp;
             <input type="radio" name="units" value="S"' . $data['units_S'] . '>S - Scientific (Kelvin, m/s, mm)</input>
         </select>

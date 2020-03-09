@@ -77,7 +77,7 @@ class Weatherbit
      * @var string - Units for API Response 
      *               M = [DEFAULT] Metric (Celcius, m/s, mm)
      *               S = Scientific (Kelvin, m/s, mm)
-     *               I = Imperial Fahrenheit (F, mph, in)
+     *               I = Imperial (Fahrenheit, mph, in)
      * @see https://www.weatherbit.io/api/requests
      */
     private $units = '';
