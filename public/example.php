@@ -1,7 +1,7 @@
 <?php
 /**
  * Example of using the Weatherbit API Wrapper
- * 
+ *
  * @see https://github.com/attogram/weatherbit-api-wrapper
  */
 declare(strict_types = 1);
@@ -50,7 +50,6 @@ $error = '';
 $weatherbit = new Weatherbit();
 
 try {
-
     $weatherbit->setKey($data['key']);
 
     if (!empty($data['units'] && $data['units'] != 'M')) {
@@ -128,9 +127,10 @@ function printForm()
 
         <dl>
             <dt>Location by City:</dt>
-                <dd> City: <input name="city" type="text" value="' . htmlentities($data['city']) . '" size="20" /></dd>
-                <dd>Country: <input name="country" type="text" value="' . htmlentities($data['country']) . '" size="2" maxlength="2" />
-                    (2 Letter Country Code) (optional)</dd>
+                <dd> City: <input name="city" type="text" value="' . htmlentities($data['city'])
+                    . '" size="20" /></dd>
+                <dd>Country: <input name="country" type="text" value="' . htmlentities($data['country'])
+                    . '" size="2" maxlength="2" /> (2 Letter Country Code) (optional)</dd>
             <br />
             <dt>Location By Latitude / Longitude:</dt>
                 <dd>Latitude: <input name="lat" type="text" value="' . $data['latitude'] . '" size="20" /></dd>
@@ -143,17 +143,16 @@ function printForm()
         Forecast Days (1-16): <input name="days" type="text" value="' . $data['days'] . '" size="2" maxlength="2" />
         <br />
         
-        Language: <input name="language" type="text" value="' . htmlentities($data['language']) . '" size="2" maxlength="2" />
-            (2 Letter Language code)
-
+        Language: <input name="language" type="text" value="' . htmlentities($data['language'])
+            . '" size="2" maxlength="2" /> (2 Letter Language code)
         <br />
 
         Units:
-            <input type="radio" name="units" value="M"' . $data['units_M'] . '>M - Metric (Celcius, m/s, mm)</input>
-            &nbsp;
-            <input type="radio" name="units" value="I"' . $data['units_I'] . '>I - Imperial (Fahrenheit, mph, in)</input>
-            &nbsp;
-            <input type="radio" name="units" value="S"' . $data['units_S'] . '>S - Scientific (Kelvin, m/s, mm)</input>
+        <input type="radio" name="units" value="M"' . $data['units_M'] . '>M - Metric (Celcius, m/s, mm)</input>
+        &nbsp;
+        <input type="radio" name="units" value="I"' . $data['units_I'] . '>I - Imperial (Fahrenheit, mph, in)</input>
+        &nbsp;
+        <input type="radio" name="units" value="S"' . $data['units_S'] . '>S - Scientific (Kelvin, m/s, mm)</input>
         </select>
         <br />
         <br />

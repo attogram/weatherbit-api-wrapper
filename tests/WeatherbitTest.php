@@ -1,7 +1,7 @@
 <?php
 /**
  * Weatherbits API Wrapper Tests
- * 
+ *
  * @see https://github.com/attogram/weatherbit-api-wrapper
  */
 declare(strict_types=1);
