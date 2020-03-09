@@ -9,6 +9,8 @@ PHP wrapper for Weatherbit.io API
 
 `composer require attogram/weatherbit-api-wrapper`
 
+* Get an API Key from: <https://www.weatherbit.io/>
+
 ## Example Usage
 
 ```php
@@ -16,18 +18,25 @@ PHP wrapper for Weatherbit.io API
 
 require('path/to/vendor/autoload.php');
 
-$weatherbit = new \Attogram\Weatherbit\Weatherbit();
+try {
+    $weatherbit = new \Attogram\Weatherbit\Weatherbit();
+    $weatherbit->setKey('YOUR-WEATHERBIT-API-KEY');
+    $weatherbit->setCity('Amsterdam');
+    $weatherbit->setCountry('NL');
 
-$weatherbit->setKey('YOUR-WEATHERBIT-API-KEY');
+    $currentWeather = $weatherbit->getCurrent(); // Gets array of current weather data
 
-$weatherbit->setCity('Amsterdam');
+    $forecastedWeather = $weatherbit->getDailyForecast(15); // Gets array 15 day forecast
 
-$weatherbit->setCountry('NL');
+} catch (Exception $exception) {
+    exit('Error: ' . $exception->getMessage());
+}
 
-$currentWeather = $weatherbit->getCurrent(); // Get current weather data
+print "Current Weather:\n";
+print_r($currentWeather);
 
-$forecastedWeather = $weatherbit->getDailyForecast(15); // Get 15 day forecast
-
+print "Forecasted Weather:\n";
+print_r($forecastedWeather);
 
 ```
 
@@ -35,6 +44,7 @@ $forecastedWeather = $weatherbit->getDailyForecast(15); // Get 15 day forecast
 
 ## Links
 
+* Github: <https://github.com/attogram/weatherbit-api-wrapper/>
 * Packagist: <https://packagist.org/packages/attogram/weatherbit-api-wrapper>
 * CodeClimate: <https://codeclimate.com/github/attogram/weatherbit-api-wrapper>
 * Travis CI: <https://travis-ci.org/attogram/weatherbit-api-wrapper>
