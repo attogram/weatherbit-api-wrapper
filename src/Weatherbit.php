@@ -252,7 +252,7 @@ class Weatherbit
         }
 
         $this->setUrl(
-            self::PREFIX_API . self::POSTFIX_FORECAST_DAILY, 
+            self::POSTFIX_FORECAST_DAILY, 
             ['days' => $days]
         );
 
@@ -266,7 +266,7 @@ class Weatherbit
      */
     public function getCurrent(): array
     {
-        $this->setUrl(self::PREFIX_API . self::POSTFIX_CURRENT);
+        $this->setUrl(self::POSTFIX_CURRENT);
 
         return $this->get();
     }
@@ -278,7 +278,8 @@ class Weatherbit
      */
     public function getUsage(): array
     {
-        $this->setUrl(self::PREFIX_API . self::POSTFIX_USAGE);
+        $this->location = []; // erase any location settings, not needed
+        $this->setUrl(self::POSTFIX_USAGE);
 
         return $this->get();
     }
@@ -306,7 +307,7 @@ class Weatherbit
             throw new Exception('Missing API Key');
         }
     
-        $this->url = $prefix . '?key=' .  urlencode($this->key);
+        $this->url = self::PREFIX_API . $prefix . '?key=' .  urlencode($this->key);
 
         if (!empty($this->language)) {
             $this->url .= '&lang=' .  urlencode($this->language);
