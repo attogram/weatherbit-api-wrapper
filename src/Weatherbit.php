@@ -1,6 +1,8 @@
 <?php
 /**
  * Weatherbit API Wrapper
+ * 
+ * @see https://github.com/attogram/weatherbit-api-wrapper
  */
 declare(strict_types = 1);
 
@@ -297,23 +299,32 @@ class Weatherbit
      * 
      * @param string $prefix - URL Prefix
      * @param array $additional - array of name/value pairs for additional URL values
+     * @throws Exception
      */
     private function setUrl($prefix, $additional = [])
     {
-        $this->url = $prefix . '?key=' . $this->key;
+        if (empty($this->key)) {
+            throw new Exception('Missing API Key');
+        }
+    
+        $this->url = $prefix . '?key=' .  urlencode($this->key);
 
         if (!empty($this->language)) {
-            $this->url .= '&lang=' . $this->language;
+            $this->url .= '&lang=' .  urlencode($this->language);
         }
         if (!empty($this->units)) {
-            $this->url .= '&units=' . $this->units;
+            $this->url .= '&units=' .  urlencode($this->units);
         }
         foreach ($this->location as $name => $value) {
-            $this->url .= '&' . $name . '=' . $value;
+            if (!empty($value)) {
+                $this->url .= '&' . $name . '=' . urlencode((string) $value);
+            }
         }
         if (!empty($additional)) {
             foreach ($additional as $name => $value) {
-                $this->url .= '&' . $name . '=' . $value;
+                if (!empty($value)) {
+                    $this->url .= '&' . $name . '=' . urlencode((string) $value);
+                }
             }
         }
     }
