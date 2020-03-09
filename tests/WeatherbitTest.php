@@ -95,4 +95,40 @@ final class WeatherbitTest extends TestCase
         $this->weatherbit->setLanguage('abc');
     }
 
+    public function testSetUnits()
+    {
+        $this->setWeatherbit();
+        $this->weatherbit->setUnits('M');
+        $this->weatherbit->setUnits('S');
+        $this->weatherbit->setUnits('I');
+        $this->assertTrue(true);
+    }
+
+    public function testSetUnitsEmptyString()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setUnits('');
+    }
+
+    public function testSetUnitsNotString()
+    {
+        $this->setWeatherbit();
+        $this->expectException(TypeError::class);
+        $this->weatherbit->setUnits([]);
+    }
+
+    public function testSetUnitsNonCode()
+    {
+        $this->setWeatherbit();
+        $this->expectException(Exception::class);
+        $this->weatherbit->setUnits('X');
+    }
+
+    public function testSetLocationByLatitudeLongitude()
+    {
+        $this->setWeatherbit();
+        $this->weatherbit->setLocationByLatitudeLongitude('48.869966', '2.332706');
+        $this->assertTrue(true);
+    }
 }
