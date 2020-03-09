@@ -77,7 +77,7 @@ class Weatherbit
     /**
      * @var string - IP address to use for weather lookup
      */
-    private $ip = '';
+    private $ipAddress = '';
 
     /**
      * Set Weatherbit API access key
@@ -123,12 +123,12 @@ class Weatherbit
     /**
      * Set IP address
      *
-     * @param string $ip - ipv4 IP address
+     * @param string $ipAddress - ipv4 IP address
      * @return void
      */
-    public function setIp($ip)
+    public function setIp($ipAddress)
     {
-        $this->ip = $ip;
+        $this->ipAddress = $ipAddress;
     }
 
     /**
