@@ -92,7 +92,6 @@ class Weatherbit
      */
     private $url = '';
 
-
     /**
      * Set Weatherbit API access key
      *
