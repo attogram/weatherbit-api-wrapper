@@ -18,7 +18,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
 
     /**
      * @var string - user agent for API requests
@@ -45,7 +45,7 @@ class Weatherbit
     /**
      * @var string - api postfix for current weather
      *             - Returns a Current Observation
-     *             - Given a city in the format of City,ST or City. 
+     *             - Given a city in the format of "City" or "City, State".
      *             - The state, and country parameters can be provided to make the search more accurate.
      * @see https://www.weatherbit.io/api/weather-current
      * @see https://www.weatherbit.io/api/swaggerui/weather-api-v2#/Current32Weather32Data
@@ -150,7 +150,7 @@ class Weatherbit
             . '?key=' . $this->key
             // lagnnguage (default: en)
             . '&lang=en'
-            // units (default: M)  
+            // units (default: M)
             // M= Metric (Celcius, m/s, mm), I= Imperial/Fahrenheit (F, mph, in), S= Scientific (Kelvin, m/s, mm)
             . '&units=M'
             . '&days=' . $days // (optional, default: 16)
@@ -205,9 +205,6 @@ class Weatherbit
         if (empty($this->city)) {
             throw new Exception('Missing City');
         }
-        //if (empty($this->country)) { // country optional
-        //    throw new Exception('Missing Country');
-        //}
     }
 
     /**

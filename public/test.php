@@ -74,7 +74,6 @@ try {
             break;
         default:
             throw new Exception('Invalid Call type');
-            break;
     }
 } catch (Exception $error) {
     $error = $error->getMessage();
