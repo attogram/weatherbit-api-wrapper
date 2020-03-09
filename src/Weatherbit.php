@@ -18,7 +18,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '1.1.0';
+    const VERSION = '1.1.1';
 
     /**
      * @var string - user agent for API requests
@@ -44,7 +44,7 @@ class Weatherbit
 
     /**
      * @var string - api postfix for current weather
-     *             - Returns a Current Observation 
+     *             - Returns a Current Observation
      *             - Given a city in the format of City,ST or City. 
      *             - The state, and country parameters can be provided to make the search more accurate.
      * @see https://www.weatherbit.io/api/weather-current
@@ -113,20 +113,16 @@ class Weatherbit
      * Set Country for weather lookup
      *
      * @param string $country - 2 character country code
-     * @throws Exception
      * @return void
      */
     public function setCountry($country)
     {
-        //if (!is_string($country) || strlen($country) != 2) { // country optional
-        //    throw new Exception('Invalid 2 Letter Country Code');
-        //}
         $this->country = $country;
     }
 
     /**
      * Set IP address
-     * 
+     *
      * @param string $ip - ipv4 IP address
      * @return void
      */
@@ -137,7 +133,7 @@ class Weatherbit
 
     /**
      * Get Daily Weather Forecast for 1-16 days in future
-     * 
+     *
      * @param int $days - Number of days to forecast (optional, default 10)
      * @throws Exception - on missing key, city, country, or invalid days
      * @return array - array of forecast data
@@ -152,8 +148,11 @@ class Weatherbit
 
         $url = self::PREFIX_API . self::POSTFIX_FORECAST_DAILY
             . '?key=' . $this->key
-            . '&lang=en' // (optional, default: en)
-            . '&units=M' // (optional, default: M)  M = Metric (Celcius, m/s, mm), I = Imperial Fahrenheit (F, mph, in), S = Scientific (Kelvin, m/s, mm) 
+            // lagnnguage (default: en)
+            . '&lang=en'
+            // units (default: M)  
+            // M= Metric (Celcius, m/s, mm), I= Imperial/Fahrenheit (F, mph, in), S= Scientific (Kelvin, m/s, mm)
+            . '&units=M'
             . '&days=' . $days // (optional, default: 16)
             . '&city=' . urlencode($this->city)
             . '&country=' . urlencode($this->country);
@@ -163,7 +162,7 @@ class Weatherbit
 
     /**
      * Get Current Weather
-     * 
+     *
      * @return array
      */
     public function getCurrent()
@@ -172,8 +171,8 @@ class Weatherbit
     
         $url = self::PREFIX_API . self::POSTFIX_CURRENT
             . '?key=' . $this->key
-            . '&lang=en' // (optional, default: en)
-            . '&units=M' // (optional, default: M)  M = Metric (Celcius, m/s, mm), I = Imperial Fahrenheit (F, mph, in), S = Scientific (Kelvin, m/s, mm) 
+            . '&lang=en'
+            . '&units=M'
             . '&city=' . urlencode($this->city)
             . '&country=' . urlencode($this->country);
 
@@ -182,7 +181,7 @@ class Weatherbit
 
     /**
      * Get current API usage stats
-     * 
+     *
      * @return array
      */
     public function getUsage()

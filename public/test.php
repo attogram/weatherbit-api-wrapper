@@ -36,7 +36,8 @@ $pageTitle= 'Weatherbit v' . Weatherbit::VERSION . ' web test';
         </select><br /><br />
         API Key: <input name="key" type="text" value="<?= htmlentities($key) ?>" size="35" /><br /><br />
         City: <input name="city" type="text" value="<?= htmlentities($city) ?>" size="20" /><br /><br />
-        Country: <input name="country" type="text" value="<?= htmlentities($country) ?>" size="2" maxlength="2" /> (2 Letter Country Code)<br /><br />
+        Country: <input name="country" type="text" value="<?= htmlentities($country) ?>" size="2" maxlength="2" />
+            (2 Letter Country Code)<br /><br />
         Forecast Days (1-16): <input name="days" type="text" value="<?= $days ?>" size="2" maxlength="2" /><br /><br />
         IP: <input name="ip" type="text" value="<?= $ip ?>" size="20" />
         <br /><br />
@@ -57,7 +58,7 @@ $error = '';
 try {
     $weatherbit = new Weatherbit();
     $weatherbit->setKey($key);
-    switch($call) {
+    switch ($call) {
         case 'forecast':
             $weatherbit->setCity($city);
             $weatherbit->setCountry($country);
@@ -94,6 +95,6 @@ function testFooter()
     print '<br /><hr />'
         . '<a href="https://github.com/attogram/weatherbit-api-wrapper/" target="_blank">'
             . 'https://github.com/attogram/weatherbit-api-wrapper/</a>'
-        . '<br /><br />' . gmdate('Y-m-d H:i:s') . ' UTC' 
+        . '<br /><br />' . gmdate('Y-m-d H:i:s') . ' UTC'
         . '</body></html>';
 }
