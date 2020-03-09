@@ -9,6 +9,7 @@ namespace Attogram\Weatherbit;
 use Exception;
 use function curl_close;
 use function curl_exec;
+use function curl_getinfo;
 use function curl_init;
 use function curl_setopt;
 use function is_array;
@@ -18,7 +19,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '1.1.4';
+    const VERSION = '2.0.0';
 
     /**
      * @var string - user agent for API requests
@@ -65,19 +66,30 @@ class Weatherbit
     private $key = '';
 
     /**
-     * @var string - City to use for weather lookup
+     * @var string - Language for API response - default 'en' for English
+     * @see https://www.weatherbit.io/api/requests
      */
-    private $city = '';
+    private $language = 'en';
 
     /**
-     * @var string - Country to use for weather lookup
+     * @var string - Units for API Response 
+     *               M = [DEFAULT] Metric (Celcius, m/s, mm)
+     *               S = Scientific (Kelvin, m/s, mm)
+     *               I = Imperial Fahrenheit (F, mph, in)
+     * @see https://www.weatherbit.io/api/requests
      */
-    private $country = '';
+    private $units = 'M';
 
     /**
-     * @var string - IP address to use for weather lookup
+     * @var string - array of location values for API call
      */
-    private $ipAddress = '';
+    private $location = [];
+
+    /**
+     * @var string - URL for API call
+     */
+    private $url = '';
+
 
     /**
      * Set Weatherbit API access key
@@ -86,7 +98,7 @@ class Weatherbit
      * @throws Exception
      * @return void
      */
-    public function setKey($key)
+    public function setKey(string $key)
     {
         if (!is_string($key) || empty($key)) {
             throw new Exception('Invalid API Key');
@@ -95,132 +107,198 @@ class Weatherbit
     }
 
     /**
-     * Set City for weather lookup
-     *
-     * @param string $city
-     * @throws Exception
-     * @return void
+     * Set Location by Latitude/Longitude
+     * 
+     * @param string $latitude
+     * @param string $longitude
      */
-    public function setCity($city)
+    public function setLocationByLatitudeLongitude(string $latitude, string $longitude)
     {
-        if (!is_string($city) || empty($city)) {
+        $this->location = [
+            'lat' => $latitude,
+            'lon' => $longitude,
+        ];
+    }
+
+    /**
+     * Set Location by City ID
+     * 
+     * @param string $cityId
+     */
+    public function setLocationByCityId(string $cityId)
+    {
+        $this->location = [
+            'city_id' => $cityId,
+        ];
+    }
+
+    /**
+     * Set Location by Postal Code
+     * 
+     * @param string $postalCode
+     */
+    public function setLocationByPostalCode(string $postalCode)
+    {
+        $this->location = [
+            'postal_code' => $postalCode,
+        ];
+    }
+
+    /**
+     * Set Location to a List of Cities IDs
+     * 
+     * @param array $cityIds
+     */
+    public function setLocationByCityIds(array $cityIds)
+    {
+        // Comma separated list of City IDs
+        $this->location = [
+            'cities' => implode(',', $cityIds),
+        ];
+    }
+
+    /**
+     * Set Location by City Name
+     * 
+     * @param string $city
+     * @param string $country (optional) 2 letter country code
+     */
+    public function setLocationByCity(string $city, string $country = '')
+    {
+        if (empty($city)) {
             throw new Exception('Invalid City');
         }
-        $this->city = $city;
+
+        $this->location = [
+            'city' => $city,
+            'country' => $country,
+        ];
     }
 
     /**
-     * Set Country for weather lookup
-     *
-     * @param string $country - 2 character country code
-     * @return void
+     * Set Location by IP Address
+     * 
+     * @param string $ipAddress - Ip Address, or 'auto'
      */
-    public function setCountry($country)
+    public function setLocationByIp(string $ipAddress = 'auto')
     {
-        $this->country = $country;
+        $this->location = [
+            'ip' => $ipAddress,
+        ];
     }
 
     /**
-     * Set IP address
-     *
-     * @param string $ipAddress - ipv4 IP address
-     * @return void
+     * Set Location by Weather Station
+     * 
+     * @param string $weatherStations
      */
-    public function setIp($ipAddress)
+    public function setLocationByStation(string $weatherStation)
     {
-        $this->ipAddress = $ipAddress;
+        $this->location = [
+            'station' => $weatherStation,
+        ];
+    }
+
+    /**
+     * Set Location to List of Weather Stations
+     */
+    public function setLocationByStations(array $weatherStations)
+    {
+        $this->location = [
+            'stations' => implode(',', $weatherStations),
+        ];
     }
 
     /**
      * Get Daily Weather Forecast for 1-16 days in future
      *
      * @param int $days - Number of days to forecast (optional, default 10)
-     * @throws Exception - on missing key, city, country, or invalid days
-     * @return array - array of forecast data
+     * @throws Exception
+     * @return array - array of weather forecast data
      */
-    public function getDailyForecast($days = 10)
+    public function getDailyForecast($days = 10): array
     {
-        $this->validateCall();
-    
         if ($days < 1 || $days > 16) {
-            throw new Exception('Days must between 1 and 16');
+            throw new Exception('Forecast Days must between 1 and 16');
         }
 
-        $url = self::PREFIX_API . self::POSTFIX_FORECAST_DAILY
-            . '?key=' . $this->key
-            // lagnnguage (default: en)
-            . '&lang=en'
-            // units (default: M)
-            // M= Metric (Celcius, m/s, mm), I= Imperial/Fahrenheit (F, mph, in), S= Scientific (Kelvin, m/s, mm)
-            . '&units=M'
-            . '&days=' . $days // (optional, default: 16)
-            . '&city=' . urlencode($this->city)
-            . '&country=' . urlencode($this->country);
+        $this->setUrl(
+            self::PREFIX_API . self::POSTFIX_FORECAST_DAILY, 
+            ['days' => $days]
+        );
 
-        return $this->get($url);
+        return $this->get();
     }
 
     /**
      * Get Current Weather
      *
-     * @return array
+     * @return array - array of current weather data
      */
-    public function getCurrent()
+    public function getCurrent(): array
     {
-        $this->validateCall();
-    
-        $url = self::PREFIX_API . self::POSTFIX_CURRENT
-            . '?key=' . $this->key
-            . '&lang=en'
-            . '&units=M'
-            . '&city=' . urlencode($this->city)
-            . '&country=' . urlencode($this->country);
+        $this->setUrl(self::PREFIX_API . self::POSTFIX_CURRENT);
 
-        return $this->get($url);
+        return $this->get();
     }
 
     /**
      * Get current API usage stats
      *
-     * @return array
+     * @return array - array of API subscription usage
      */
-    public function getUsage()
+    public function getUsage(): array
     {
-        $url = self::PREFIX_API . self::POSTFIX_USAGE . '?key=' . $this->key;
+        $this->setUrl(self::PREFIX_API . self::POSTFIX_USAGE);
 
-        return $this->get($url);
+        return $this->get();
     }
 
     /**
-     * validate we have the required variables for an API call
-     *
-     * @throws Exception
-     * @return void
+     * Get current API Call URL
+     * 
+     * @return string - The Current URL
      */
-    private function validateCall()
+    public function getUrl(): string
     {
-        if (empty($this->key)) {
-            throw new Exception('Missing API Key');
+        return $this->url;
+    }
+
+    /**
+     * Set the URL string for the API Call
+     * 
+     * @param string $prefix - URL Prefix
+     * @param array $additional - array of name/value pairs for additional URL values
+     */
+    private function setUrl($prefix, $additional = [])
+    {
+        $this->url = $prefix
+            . '?key=' . $this->key
+            . '&lang=' . $this->language
+            . '&units=' . $this->units;
+        foreach ($this->location as $name => $value) {
+            $this->url .= '&' . $name . '=' . $value;
         }
-        if (empty($this->city)) {
-            throw new Exception('Missing City');
+        if (!empty($additional)) {
+            foreach ($additional as $name => $value) {
+                $this->url .= '&' . $name . '=' . $value;
+            }
         }
     }
 
     /**
-     * Get Data from the API
+     * Get Weather Data from the API
      *
-     * @param string $url
      * @throws Exception
-     * @return array - array of forecast data
+     * @return array - array of weather data
      */
-    private function get($url)
+    private function get()
     {
-        if (empty($url) || !is_string($url)) {
-            throw new Exception('Invalid API URL');
+        if (empty($this->url)) {
+            throw new Exception('Missing URL for API Call');
         }
     
-        $curl = curl_init($url);
+        $curl = curl_init($this->url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_USERAGENT, self::USER_AGENT);
 

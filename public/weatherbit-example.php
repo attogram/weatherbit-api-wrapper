@@ -1,6 +1,6 @@
 <?php
 /**
- * Test for Weatherbit API Wrapper
+ * Example of using the Weatherbit API Wrapper
  */
 declare(strict_types = 1);
 
@@ -10,7 +10,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require('../src/Weatherbit.php');
+require('../src/Weatherbit.php'); // or: require('path/to/vendor/autoload.php');
 
 $call      = isset($_GET['call']) ? $_GET['call'] : '';
 $key       = isset($_GET['key']) ? $_GET['key'] : '';
@@ -35,7 +35,7 @@ print '<html>
     <h1>' . $pageTitle  . '</h1>
     <form>
         Call: <select name="call">
-            <option value="forecast"' . $callSelected['forecast'] . '>Daily Weather Forecast</option>
+            <option value="forecast"' . $callSelected['forecast'] . '>Daily Weather Forecast (1-16 days)</option>
             <option value="current"' . $callSelected['current']  . '>Current Weather</option>
             <option value="usage"' . $callSelected['usage']  . '>API Usage</option>
         </select><br /><br />
@@ -59,18 +59,17 @@ if (!isset($_GET['run']) || $_GET['run'] != 'test') {
 $data = [];
 $error = '';
 
+$weatherbit = new Weatherbit();
+
 try {
-    $weatherbit = new Weatherbit();
     $weatherbit->setKey($key);
     switch ($call) {
         case 'forecast':
-            $weatherbit->setCity($city);
-            $weatherbit->setCountry($country);
+            $weatherbit->setLocationByCity($city, $country);
             $data = $weatherbit->getDailyForecast($days);
             break;
         case 'current':
-            $weatherbit->setCity($city);
-            $weatherbit->setCountry($country);
+            $weatherbit->setLocationByCity($city, $country);
             $data = $weatherbit->getCurrent();
             break;
         case 'usage':
@@ -83,6 +82,9 @@ try {
 } catch (Exception $error) {
     $error = $error->getMessage();
 }
+
+print '<pre>API Call URL:<br /><a href="' . $weatherbit->getUrl() . '" target="_blank">'
+    . $weatherbit->getUrl() . '</a></pre>';
 
 if ($error) {
     print '<p style="background-color:lightsalmon;padding:10px;">ERROR: ' . $error . '</p>';

@@ -20,34 +20,53 @@ Versions:
 
 ```php
 <?php
-
 require('path/to/vendor/autoload.php');
 
+$weatherbit = new \Attogram\Weatherbit\Weatherbit();
+
 try {
-    $weatherbit = new \Attogram\Weatherbit\Weatherbit();
     $weatherbit->setKey('YOUR-WEATHERBIT-API-KEY');
-    $weatherbit->setCity('Amsterdam');
-    $weatherbit->setCountry('NL');
-
+    $weatherbit->setLocationByCity('Amsterdam', 'NL');
     $currentWeather = $weatherbit->getCurrent(); // Gets array of current weather data
-
-    $forecastedWeather = $weatherbit->getDailyForecast(15); // Gets array 15 day forecast
-
 } catch (Exception $exception) {
     exit('Error: ' . $exception->getMessage());
 }
 
-print "Current Weather:\n";
 print_r($currentWeather);
-
-print "Forecasted Weather:\n";
-print_r($forecastedWeather);
-
 ```
 
-* see [public/test.php](public/test.php) for an example web form
+* see [public/test.php](public/weatherbit-example.php) for an example web form
 
-## Links
+
+## Functions
+
+### public function setKey(string $key)
+
+### public function setLocationByLatitudeLongitude(string $latitude, string $longitude)
+
+### public function setLocationByCityId(string $cityId)
+
+### public function setLocationByPostalCode(string $postalCode)
+
+### public function setLocationByCityIds(array $cityIds)
+
+### public function setLocationByCity(string $city, string $country = '')
+
+### public function setLocationByIp(string $ipAddress = 'auto')
+
+### public function setLocationByStation(string $weatherStation)
+
+### public function setLocationByStations(array $weatherStations)
+
+### public function getDailyForecast($days = 10): array
+
+### public function getCurrent(): array
+
+### public function getUsage(): array
+
+### public function getUrl(): string
+
+## Project Links
 
 * Github: <https://github.com/attogram/weatherbit-api-wrapper/>
 * Packagist: <https://packagist.org/packages/attogram/weatherbit-api-wrapper>
