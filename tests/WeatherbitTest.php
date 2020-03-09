@@ -25,12 +25,13 @@ final class WeatherbitTest extends TestCase
     {
         $this->setWeatherbit();
         $this->assertInstanceOf(Weatherbit::class, $this->weatherbit);
-        $this->assertIsString(Weatherbit::VERSION);
-        $this->assertIsString(Weatherbit::USER_AGENT);
-        $this->assertIsString(Weatherbit::PREFIX_API);
-        $this->assertIsString(Weatherbit::POSTFIX_FORECAST_DAILY);
-        $this->assertIsString(Weatherbit::POSTFIX_CURRENT);
-        $this->assertIsString(Weatherbit::POSTFIX_USAGE);
+        $this->assertTrue(is_string(Weatherbit::VERSION));
+        $this->assertTrue(is_string(Weatherbit::VERSION));
+        $this->assertTrue(is_string(Weatherbit::USER_AGENT));
+        $this->assertEquals(Weatherbit::PREFIX_API, 'https://api.weatherbit.io/v2.0');
+        $this->assertEquals(Weatherbit::POSTFIX_FORECAST_DAILY, '/forecast/daily');
+        $this->assertEquals(Weatherbit::POSTFIX_CURRENT, '/current');
+        $this->assertEquals(Weatherbit::POSTFIX_USAGE, '/subscription/usage');
         $this->assertClassHasAttribute('key', Weatherbit::class);
         $this->assertClassHasAttribute('language', Weatherbit::class);
         $this->assertClassHasAttribute('units', Weatherbit::class);
