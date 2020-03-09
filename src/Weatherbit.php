@@ -18,7 +18,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     /**
      * @var string - user agent for API requests
