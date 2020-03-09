@@ -25,9 +25,15 @@ require('path/to/vendor/autoload.php');
 $weatherbit = new \Attogram\Weatherbit\Weatherbit();
 
 try {
+    // Always set your API Key
     $weatherbit->setKey('YOUR-WEATHERBIT-API-KEY');
+
+    // Set location using one of the setLocationBy*() functions
     $weatherbit->setLocationByCity('Amsterdam', 'NL');
-    $currentWeather = $weatherbit->getCurrent(); // Gets array of current weather data
+
+    // Gets array of current weather data
+    $currentWeather = $weatherbit->getCurrent();
+
 } catch (Exception $exception) {
     exit('Error: ' . $exception->getMessage());
 }
