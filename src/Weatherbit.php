@@ -1,7 +1,7 @@
 <?php
 /**
  * Weatherbit API Wrapper
- * 
+ *
  * @see https://github.com/attogram/weatherbit-api-wrapper
  */
 declare(strict_types = 1);
@@ -21,7 +21,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '2.0.0';
+    const VERSION = '2.0.1';
 
     /**
      * @var string - user agent for API requests
@@ -74,7 +74,7 @@ class Weatherbit
     private $language = '';
 
     /**
-     * @var string - Units for API Response 
+     * @var string - Units for API Response
      *               M = [DEFAULT] Metric (Celcius, m/s, mm)
      *               S = Scientific (Kelvin, m/s, mm)
      *               I = Imperial (Fahrenheit, mph, in)
@@ -124,7 +124,7 @@ class Weatherbit
     /**
      * Set Units
      * @see https://www.weatherbit.io/api/requests
-     * 
+     *
      * @param string $unitsCode - 1 letter units code
      */
     public function setUnits(string $unitsCode)
@@ -137,7 +137,7 @@ class Weatherbit
 
     /**
      * Set Location by Latitude/Longitude
-     * 
+     *
      * @param string $latitude
      * @param string $longitude
      */
@@ -155,7 +155,7 @@ class Weatherbit
 
     /**
      * Set Location by City Name
-     * 
+     *
      * @param string $city
      * @param string $country (optional) 2 letter country code
      */
@@ -177,7 +177,7 @@ class Weatherbit
 
     /**
      * Set Location by City ID
-     * 
+     *
      * @param string $cityId
      */
     public function setLocationByCityId(string $cityId)
@@ -189,7 +189,7 @@ class Weatherbit
 
     /**
      * Set Location to a List of Cities IDs
-     * 
+     *
      * @param array $cityIds
      */
     public function setLocationByCityIds(array $cityIds)
@@ -202,7 +202,7 @@ class Weatherbit
 
     /**
      * Set Location by Postal Code
-     * 
+     *
      * @param string $postalCode
      */
     public function setLocationByPostalCode(string $postalCode)
@@ -214,7 +214,7 @@ class Weatherbit
 
     /**
      * Set Location by IP Address
-     * 
+     *
      * @param string $ipAddress - Ip Address, or 'auto'
      */
     public function setLocationByIp(string $ipAddress = 'auto')
@@ -226,7 +226,7 @@ class Weatherbit
 
     /**
      * Set Location by Weather Station
-     * 
+     *
      * @param string $weatherStations
      */
     public function setLocationByStation(string $weatherStation)
@@ -238,6 +238,8 @@ class Weatherbit
 
     /**
      * Set Location to List of Weather Stations
+     *
+     * @param array $weatherStations
      */
     public function setLocationByStations(array $weatherStations)
     {
@@ -260,7 +262,7 @@ class Weatherbit
         }
 
         $this->setUrl(
-            self::POSTFIX_FORECAST_DAILY, 
+            self::POSTFIX_FORECAST_DAILY,
             ['days' => $days]
         );
 
@@ -294,7 +296,7 @@ class Weatherbit
 
     /**
      * Get current API Call URL
-     * 
+     *
      * @return string - The Current URL
      */
     public function getUrl(): string
@@ -304,7 +306,7 @@ class Weatherbit
 
     /**
      * Set the URL string for the API Call
-     * 
+     *
      * @param string $prefix - URL Prefix
      * @param array $additional - array of name/value pairs for additional URL values
      * @throws Exception
