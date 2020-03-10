@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Attogram\Weatherbit\Weatherbit;
+use Attogram\Weatherbit\WeatherbitException;
 
 final class WeatherbitTest extends TestCase
 {
@@ -16,6 +17,7 @@ final class WeatherbitTest extends TestCase
      */
     protected $weatherbit;
 
+    // @TODO test setUp() against phpunit 6
     protected function setWeatherbit()
     {
         if (!$this->weatherbit) {
@@ -23,8 +25,9 @@ final class WeatherbitTest extends TestCase
         }
     }
 
-    public function testClass()
+    public function testWeatherbitClass()
     {
+        $this->assertTrue(class_exists('Attogram\Weatherbit\Weatherbit'));
         $this->setWeatherbit();
         $this->assertInstanceOf(Weatherbit::class, $this->weatherbit);
         $this->assertTrue(is_string(Weatherbit::VERSION));
@@ -41,6 +44,13 @@ final class WeatherbitTest extends TestCase
         $this->assertClassHasAttribute('url', Weatherbit::class);
     }
 
+    public function testClassWeatherbitException()
+    {
+        $this->assertTrue(class_exists('\Attogram\Weatherbit\WeatherbitException'));
+        $this->expectException(WeatherbitException::class);
+        throw new WeatherbitException();
+    }
+
     public function testSetKey()
     {
         $this->setWeatherbit();
@@ -51,7 +61,7 @@ final class WeatherbitTest extends TestCase
     public function testSetKeyEmptyString()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setKey('');
     }
 
@@ -72,7 +82,7 @@ final class WeatherbitTest extends TestCase
     public function testSetLanguageEmptyString()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLanguage('');
     }
 
@@ -86,14 +96,14 @@ final class WeatherbitTest extends TestCase
     public function testSetLanguageTooShort()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLanguage('a');
     }
 
     public function testSetLanguageTooLong()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLanguage('abc');
     }
 
@@ -109,7 +119,7 @@ final class WeatherbitTest extends TestCase
     public function testSetUnitsEmptyString()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setUnits('');
     }
 
@@ -123,7 +133,7 @@ final class WeatherbitTest extends TestCase
     public function testSetUnitsNonCode()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setUnits('X');
     }
 
@@ -137,7 +147,7 @@ final class WeatherbitTest extends TestCase
     public function testSetLocationByLatitudeLongitudeEmptyStrings()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLocationByLatitudeLongitude('', '');
     }
 
@@ -172,14 +182,14 @@ final class WeatherbitTest extends TestCase
     public function testSetLocationByCityEmptyString()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLocationByCity('');
     }
 
     public function testSetLocationByCityEmptyStrings()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLocationByCity('', '');
     }
 
@@ -200,7 +210,7 @@ final class WeatherbitTest extends TestCase
     public function testSetLocationByCityInvalidCountry()
     {
         $this->setWeatherbit();
-        $this->expectException(Exception::class);
+        $this->expectException(WeatherbitException::class);
         $this->weatherbit->setLocationByCity('Amsterdam', 'NLD');
     }
 
