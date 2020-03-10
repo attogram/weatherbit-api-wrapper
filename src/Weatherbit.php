@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace Attogram\Weatherbit;
 
-use Exception;
 use function curl_close;
 use function curl_exec;
 use function curl_getinfo;
@@ -21,7 +20,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '2.0.1';
+    const VERSION = '2.1.0';
 
     /**
      * @var string - user agent for API requests
@@ -96,13 +95,13 @@ class Weatherbit
      * Set Weatherbit API access key
      *
      * @param string $key
-     * @throws Exception
+     * @throws WeatherbitException
      * @return void
      */
     public function setKey(string $key)
     {
         if (empty($key)) {
-            throw new Exception('Missing API Key');
+            throw new WeatherbitException('Missing API Key');
         }
         $this->key = $key;
     }
@@ -112,11 +111,13 @@ class Weatherbit
      * @see https://www.weatherbit.io/api/requests
      *
      * @param string $languageCode - 2 letter language code
+     * @throws WeatherbitException
+     * @return void
      */
     public function setLanguage(string $languageCode)
     {
         if (empty($languageCode) || strlen($languageCode) != 2) {
-            throw new Exception('Invalid Language Code');
+            throw new WeatherbitException('Invalid Language Code');
         }
         $this->language = $languageCode;
     }
@@ -126,11 +127,13 @@ class Weatherbit
      * @see https://www.weatherbit.io/api/requests
      *
      * @param string $unitsCode - 1 letter units code
+     * @throws WeatherbitException
+     * @return void
      */
     public function setUnits(string $unitsCode)
     {
         if (empty($unitsCode) || !in_array($unitsCode, ['M', 'S', 'I'])) {
-            throw new Exception('Invalid Units value.  Please use: M, S, or I');
+            throw new WeatherbitException('Invalid Units value.  Please use: M, S, or I');
         }
         $this->units = $unitsCode;
     }
@@ -140,11 +143,13 @@ class Weatherbit
      *
      * @param string $latitude
      * @param string $longitude
+     * @throws WeatherbitException
+     * @return void
      */
     public function setLocationByLatitudeLongitude(string $latitude, string $longitude)
     {
         if (empty($latitude) || empty($longitude)) {
-            throw new Exception('Missing latitude and/or longitude');
+            throw new WeatherbitException('Missing latitude and/or longitude');
         }
 
         $this->location = [
@@ -158,15 +163,17 @@ class Weatherbit
      *
      * @param string $city
      * @param string $country (optional) 2 letter country code
+     * @throws WeatherbitException
+     * @return void
      */
     public function setLocationByCity(string $city, string $country = '')
     {
         if (empty($city)) {
-            throw new Exception('Invalid City');
+            throw new WeatherbitException('Invalid City');
         }
 
         if (!empty($country) && strlen($country) != 2) {
-            throw new Exception('Invalid Country Code');
+            throw new WeatherbitException('Invalid Country Code');
         }
     
         $this->location['city'] = $city;
@@ -252,13 +259,13 @@ class Weatherbit
      * Get Daily Weather Forecast for 1-16 days in future
      *
      * @param int $days - Number of days to forecast (optional, default 10)
-     * @throws Exception
+     * @throws WeatherbitException
      * @return array - array of weather forecast data
      */
     public function getDailyForecast($days = 10): array
     {
         if ($days < 1 || $days > 16) {
-            throw new Exception('Forecast Days must between 1 and 16');
+            throw new WeatherbitException('Forecast Days must between 1 and 16');
         }
 
         $this->setUrl(
@@ -309,12 +316,13 @@ class Weatherbit
      *
      * @param string $prefix - URL Prefix
      * @param array $additional - array of name/value pairs for additional URL values
-     * @throws Exception
+     * @throws WeatherbitException
+     * @return void
      */
     private function setUrl($prefix, $additional = [])
     {
         if (empty($this->key)) {
-            throw new Exception('Missing API Key');
+            throw new WeatherbitException('Missing API Key');
         }
     
         $this->url = self::PREFIX_API . $prefix . '?key=' .  urlencode($this->key);
@@ -330,11 +338,13 @@ class Weatherbit
                 $this->url .= '&' . $name . '=' . urlencode((string) $value);
             }
         }
-        if (!empty($additional)) {
-            foreach ($additional as $name => $value) {
-                if (!empty($value)) {
-                    $this->url .= '&' . $name . '=' . urlencode((string) $value);
-                }
+    
+        if (empty($additional)) {
+            return;
+        }
+        foreach ($additional as $name => $value) {
+            if (!empty($value)) {
+                $this->url .= '&' . $name . '=' . urlencode((string) $value);
             }
         }
     }
@@ -342,13 +352,13 @@ class Weatherbit
     /**
      * Get Weather Data from the API
      *
-     * @throws Exception
+     * @throws WeatherbitException
      * @return array - array of weather data
      */
     private function get()
     {
         if (empty($this->url)) {
-            throw new Exception('Missing URL for API Call');
+            throw new WeatherbitException('Missing URL for API Call');
         }
     
         $curl = curl_init($this->url);
@@ -360,16 +370,16 @@ class Weatherbit
         curl_close($curl);
 
         if ($status != '200') {
-            throw new Exception('API Failure - status code: ' . $status . ' - data: ' . print_r($jsonData, true));
+            throw new WeatherbitException('API Failure - status code: ' . $status . ' - data: ' . print_r($jsonData, true));
         }
 
         if (empty($jsonData)) {
-            throw new Exception('No data from API');
+            throw new WeatherbitException('No data from API');
         }
 
         $data = @json_decode($jsonData, true); // @silently ignore decode errors
         if (!is_array($data)) {
-            throw new Exception('Unable to decode response from API');
+            throw new WeatherbitException('Unable to decode response from API');
         }
 
         return $data;

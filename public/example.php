@@ -12,7 +12,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require('../src/Weatherbit.php'); // or: require('path/to/vendor/autoload.php');
+require('../vendor/autoload.php');
 
 $data = [];
 
@@ -83,7 +83,7 @@ try {
             break;
     }
 } catch (Exception $error) {
-    $error = $error->getMessage();
+    $error = get_class($error) . ': ' . $error->getMessage();
 }
 
 printResults($response, $error);
