@@ -339,7 +339,7 @@ class Weatherbit
 
     /**
      * Set location values to url
-     * 
+     *
      * @return void
      */
     private function setUrlLocation()
@@ -356,7 +356,7 @@ class Weatherbit
 
     /**
      * Set additional values to url
-     * 
+     *
      * @param array $additional
      * @return void
      */
