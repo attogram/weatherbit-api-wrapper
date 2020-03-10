@@ -333,12 +333,35 @@ class Weatherbit
         if (!empty($this->units)) {
             $this->url .= '&units=' .  urlencode($this->units);
         }
+        $this->setUrlLocation();
+        $this->setUrlAdditional($additional);
+    }
+
+    /**
+     * Set location values to url
+     * 
+     * @return void
+     */
+    private function setUrlLocation()
+    {
+        if (empty($this->location)) {
+            return;
+        }
         foreach ($this->location as $name => $value) {
             if (!empty($value)) {
                 $this->url .= '&' . $name . '=' . urlencode((string) $value);
             }
         }
-    
+    }
+
+    /**
+     * Set additional values to url
+     * 
+     * @param array $additional
+     * @return void
+     */
+    private function setUrlAdditional(array $additional = [])
+    {
         if (empty($additional)) {
             return;
         }
@@ -370,7 +393,9 @@ class Weatherbit
         curl_close($curl);
 
         if ($status != '200') {
-            throw new WeatherbitException('API Failure - status code: ' . $status . ' - data: ' . print_r($jsonData, true));
+            throw new WeatherbitException(
+                'API Failure - status code: ' . $status . ' - data: ' . print_r($jsonData, true)
+            );
         }
 
         if (empty($jsonData)) {
