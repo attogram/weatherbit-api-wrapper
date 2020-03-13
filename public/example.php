@@ -111,7 +111,7 @@ function printForm()
     global $data;
 
     print '<html><head><title>' . $data['pageTitle'] . '</title></head><body>
-    <h1>' . $data['pageTitle']  . '</h1>
+    <h1>' . $data['pageTitle'] . '</h1>
     <form>
         <dl>
             <dt>API Call:<dt>

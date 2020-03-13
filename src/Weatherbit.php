@@ -324,7 +324,7 @@ class Weatherbit
         if (empty($this->key)) {
             throw new WeatherbitException('Missing API Key');
         }
-    
+
         $this->url = self::PREFIX_API . $prefix . '?key=' . urlencode($this->key);
 
         if (!empty($this->language)) {
