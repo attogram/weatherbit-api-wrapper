@@ -4,6 +4,7 @@ PHP wrapper for Weatherbit.io API
 
 [![Build Status](https://travis-ci.org/attogram/weatherbit-api-wrapper.svg?branch=master)](https://travis-ci.org/attogram/weatherbit-api-wrapper)
 [![Maintainability](https://api.codeclimate.com/v1/badges/46de553afcad6cff3161/maintainability)](https://codeclimate.com/github/attogram/weatherbit-api-wrapper/maintainability)
+[![StyleCI](https://github.styleci.io/repos/244855065/shield?branch=master)](https://github.styleci.io/repos/244855065)
 [![Total Downloads](https://poser.pugx.org/attogram/weatherbit-api-wrapper/downloads)](https://packagist.org/packages/attogram/weatherbit-api-wrapper)
 [![License](https://poser.pugx.org/attogram/weatherbit-api-wrapper/license)](https://packagist.org/packages/attogram/weatherbit-api-wrapper)
 
@@ -81,3 +82,4 @@ print_r($currentWeather);
 * Packagist: <https://packagist.org/packages/attogram/weatherbit-api-wrapper>
 * CodeClimate: <https://codeclimate.com/github/attogram/weatherbit-api-wrapper>
 * Travis CI: <https://travis-ci.org/attogram/weatherbit-api-wrapper>
+* Style CI: <https://github.styleci.io/repos/244855065>
