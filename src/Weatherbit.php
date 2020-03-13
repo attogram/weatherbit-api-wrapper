@@ -4,7 +4,7 @@
  *
  * @see https://github.com/attogram/weatherbit-api-wrapper
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Attogram\Weatherbit;
 
@@ -20,7 +20,7 @@ use function strlen;
 
 class Weatherbit
 {
-    const VERSION = '2.1.0';
+    const VERSION = '2.1.1';
 
     /**
      * @var string - user agent for API requests
@@ -175,7 +175,7 @@ class Weatherbit
         if (!empty($country) && strlen($country) != 2) {
             throw new WeatherbitException('Invalid Country Code');
         }
-    
+
         $this->location['city'] = $city;
         if (!empty($country)) {
             $this->location['country'] = $country;
@@ -325,13 +325,13 @@ class Weatherbit
             throw new WeatherbitException('Missing API Key');
         }
     
-        $this->url = self::PREFIX_API . $prefix . '?key=' .  urlencode($this->key);
+        $this->url = self::PREFIX_API . $prefix . '?key=' . urlencode($this->key);
 
         if (!empty($this->language)) {
-            $this->url .= '&lang=' .  urlencode($this->language);
+            $this->url .= '&lang=' . urlencode($this->language);
         }
         if (!empty($this->units)) {
-            $this->url .= '&units=' .  urlencode($this->units);
+            $this->url .= '&units=' . urlencode($this->units);
         }
         $this->setUrlLocation();
         $this->setUrlAdditional($additional);
@@ -383,7 +383,7 @@ class Weatherbit
         if (empty($this->url)) {
             throw new WeatherbitException('Missing URL for API Call');
         }
-    
+
         $curl = curl_init($this->url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_USERAGENT, self::USER_AGENT);

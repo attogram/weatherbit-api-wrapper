@@ -4,9 +4,9 @@
  *
  * @see https://github.com/attogram/weatherbit-api-wrapper
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
-use \Attogram\Weatherbit\Weatherbit;
+use Attogram\Weatherbit\Weatherbit;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
